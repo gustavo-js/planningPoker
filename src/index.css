@@ -1,0 +1,59 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --surface-alt: #0f3460;
+  --accent: #e94560;
+  --accent-hover: #c73652;
+  --text: #eaeaea;
+  --text-muted: #888;
+  --card-back: #0f3460;
+  --card-border: #e94560;
+  --radius: 8px;
+  --radius-lg: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  border-radius: var(--radius);
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+input {
+  font-family: inherit;
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-alt);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--accent);
+}
