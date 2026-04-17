@@ -8,7 +8,7 @@ const QUICK_EMOJIS = ['🍅', '💩', '👏']
 const LAST_PICKER_KEY = 'lastPickerEmoji'
 
 function getLastPickerEmoji() {
-  return localStorage.getItem(LAST_PICKER_KEY) || null
+  return localStorage.getItem(LAST_PICKER_KEY) || '🔥'
 }
 
 export default function EmojiTray({ targetRect, onThrow, onClose }) {
