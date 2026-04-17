@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getDatabase, ref, set, get, update, onValue, remove } from 'firebase/database'
+import { getDatabase, ref, set, get, update, onValue, remove, push, onChildAdded } from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -47,4 +47,20 @@ export async function newRound(roomId, votes) {
 export function subscribeToRoom(roomId, callback) {
   const roomRef = ref(db, `rooms/${roomId}`)
   return onValue(roomRef, snapshot => callback(snapshot.val()))
+}
+
+export async function throwEmoji(roomId, fromId, toId, emoji) {
+  await push(ref(db, `rooms/${roomId}/throws`), { fromId, toId, emoji, timestamp: Date.now() })
+}
+
+export function subscribeToThrows(roomId, callback) {
+  return onChildAdded(ref(db, `rooms/${roomId}/throws`), snapshot => {
+    const data = snapshot.val()
+    if (!data || Date.now() - data.timestamp > 10000) return
+    callback({ id: snapshot.key, ...data })
+  })
+}
+
+export async function removeThrow(roomId, throwId) {
+  await remove(ref(db, `rooms/${roomId}/throws/${throwId}`))
 }
