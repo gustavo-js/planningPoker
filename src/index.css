@@ -5,15 +5,15 @@
 }
 
 :root {
-  --bg: #1a1a2e;
-  --surface: #16213e;
-  --surface-alt: #0f3460;
-  --accent: #e94560;
-  --accent-hover: #c73652;
-  --text: #eaeaea;
-  --text-muted: #888;
-  --card-back: #0f3460;
-  --card-border: #e94560;
+  --bg: #111111;
+  --surface: #1c1c1c;
+  --surface-alt: #2a2a2a;
+  --accent: #9b8ec4;
+  --accent-hover: #7d6faa;
+  --text: #e8e8e8;
+  --text-muted: #666;
+  --card-back: #2a2a2a;
+  --card-border: #9b8ec4;
   --radius: 8px;
   --radius-lg: 16px;
 }
