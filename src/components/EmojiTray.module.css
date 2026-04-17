@@ -1,0 +1,65 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: transparent;
+}
+
+.tray {
+  background: var(--surface);
+  border: 1px solid var(--surface-alt);
+  border-radius: var(--radius, 8px);
+  padding: 0.4rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.quickRow {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.emojiBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.emojiBtn:hover {
+  background: var(--surface-alt);
+}
+
+.plusBtn {
+  background: none;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 700;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+}
+
+.plusBtn:hover {
+  background: var(--surface-alt);
+  color: var(--text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.1rem;
+  max-height: 180px;
+  overflow-y: auto;
+  width: 220px;
+}
