@@ -56,7 +56,7 @@ export async function throwEmoji(roomId, fromId, toId, emoji) {
 export function subscribeToThrows(roomId, callback) {
   return onChildAdded(ref(db, `rooms/${roomId}/throws`), snapshot => {
     const data = snapshot.val()
-    if (!data || Date.now() - data.timestamp > 10000) return
+    if (!data || Date.now() - data.timestamp >= 10000) return
     callback({ id: snapshot.key, ...data })
   })
 }

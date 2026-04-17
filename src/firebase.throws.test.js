@@ -28,6 +28,7 @@ beforeEach(() => {
   mockRef.mockImplementation((_db, path) => ({ _path: path }))
   mockPush.mockResolvedValue({})
   mockRemove.mockResolvedValue({})
+  mockOnChildAdded.mockReturnValue(vi.fn())
 })
 
 describe('throwEmoji', () => {
@@ -52,10 +53,12 @@ describe('throwEmoji', () => {
 
 describe('subscribeToThrows', () => {
   it('subscribes to rooms/{roomId}/throws with onChildAdded', () => {
-    mockOnChildAdded.mockReturnValue(vi.fn())
     subscribeToThrows('room1', vi.fn())
     expect(mockRef).toHaveBeenCalledWith(expect.anything(), 'rooms/room1/throws')
-    expect(mockOnChildAdded).toHaveBeenCalled()
+    expect(mockOnChildAdded).toHaveBeenCalledWith(
+      expect.objectContaining({ _path: 'rooms/room1/throws' }),
+      expect.any(Function)
+    )
   })
 
   it('calls callback with normalised throw data for fresh events', () => {
@@ -84,6 +87,21 @@ describe('subscribeToThrows', () => {
     expect(cb).not.toHaveBeenCalled()
   })
 
+  it('ignores events at exactly 10 seconds old', () => {
+    const cb = vi.fn()
+    let handler
+    mockOnChildAdded.mockImplementation((_ref, h) => { handler = h; return vi.fn() })
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-01-01T00:00:10.000Z'))
+    subscribeToThrows('room1', cb)
+    handler({
+      key: 'throw1',
+      val: () => ({ fromId: 'a', toId: 'b', emoji: '🍅', timestamp: new Date('2026-01-01T00:00:00.000Z').getTime() }),
+    })
+    vi.useRealTimers()
+    expect(cb).not.toHaveBeenCalled()
+  })
+
   it('returns the unsubscribe function from onChildAdded', () => {
     const unsub = vi.fn()
     mockOnChildAdded.mockReturnValue(unsub)
@@ -96,6 +114,6 @@ describe('removeThrow', () => {
   it('removes the entry at rooms/{roomId}/throws/{throwId}', async () => {
     await removeThrow('room1', 'throw1')
     expect(mockRef).toHaveBeenCalledWith(expect.anything(), 'rooms/room1/throws/throw1')
-    expect(mockRemove).toHaveBeenCalled()
+    expect(mockRemove).toHaveBeenCalledWith(expect.objectContaining({ _path: 'rooms/room1/throws/throw1' }))
   })
 })
