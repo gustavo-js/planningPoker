@@ -1,12 +1,22 @@
+import { forwardRef } from 'react'
 import styles from './PlayerCard.module.css'
 
-export default function PlayerCard({ name, card, revealed, isMe, index = 0 }) {
+const PlayerCard = forwardRef(function PlayerCard(
+  { name, card, revealed, isMe, index = 0, onClick },
+  ref
+) {
   const hasVoted = card !== null
-
   const backClass = hasVoted ? styles.cardBack : styles.cardPending
 
   return (
-    <div className={styles.seat} data-me={isMe || undefined}>
+    <div
+      ref={ref}
+      className={styles.seat}
+      data-me={isMe || undefined}
+      data-testid="player-seat"
+      onClick={onClick}
+      style={onClick ? { cursor: 'pointer' } : undefined}
+    >
       <div
         className={`${styles.cardWrapper} ${revealed ? styles.flipped : ''}`}
         style={{ '--flip-delay': `${index * 80}ms` }}
@@ -18,11 +28,13 @@ export default function PlayerCard({ name, card, revealed, isMe, index = 0 }) {
             )}
           </div>
           <div className={`${styles.cardFace} ${styles.cardFront}`}>
-            {hasVoted ? card : '—'}
+            {revealed && (hasVoted ? card : '—')}
           </div>
         </div>
       </div>
       <span className={`${styles.name} ${isMe ? styles.nameMe : ''}`}>{name}</span>
     </div>
   )
-}
+})
+
+export default PlayerCard

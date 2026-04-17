@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import PlayerCard from './PlayerCard'
 
 describe('PlayerCard', () => {
@@ -32,5 +32,24 @@ describe('PlayerCard', () => {
   it('adds isMe style when isMe is true', () => {
     render(<PlayerCard name="Me" card={null} revealed={false} isMe={true} />)
     expect(screen.getByText('Me').closest('[data-me]')).toBeInTheDocument()
+  })
+
+  it('calls onClick when the seat is clicked', () => {
+    const handleClick = vi.fn()
+    render(<PlayerCard name="Bob" card={null} revealed={false} isMe={false} onClick={handleClick} />)
+    fireEvent.click(screen.getByTestId('player-seat'))
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows pointer cursor when onClick is provided', () => {
+    render(<PlayerCard name="Bob" card={null} revealed={false} isMe={false} onClick={vi.fn()} />)
+    expect(screen.getByTestId('player-seat').style.cursor).toBe('pointer')
+  })
+
+  it('forwards ref to the seat element', () => {
+    const ref = { current: null }
+    render(<PlayerCard ref={ref} name="Bob" card={null} revealed={false} isMe={false} />)
+    expect(ref.current).not.toBeNull()
+    expect(ref.current.tagName).toBe('DIV')
   })
 })
