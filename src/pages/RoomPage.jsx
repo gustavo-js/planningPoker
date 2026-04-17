@@ -82,11 +82,15 @@ export default function RoomPage() {
     isMe: id === session.userId,
   }))
 
-  const quarter = Math.ceil(players.length / 4)
-  const topPlayers = players.slice(0, quarter)
-  const rightPlayers = players.slice(quarter, quarter * 2)
-  const bottomPlayers = players.slice(quarter * 2, quarter * 3)
-  const leftPlayers = players.slice(quarter * 3)
+  const base = Math.floor(players.length / 4)
+  const rem = players.length % 4
+  const topCount    = base + (rem > 0 ? 1 : 0)
+  const bottomCount = base + (rem > 1 ? 1 : 0)
+  const rightCount  = base + (rem > 2 ? 1 : 0)
+  const topPlayers    = players.slice(0, topCount)
+  const rightPlayers  = players.slice(topCount, topCount + rightCount)
+  const bottomPlayers = players.slice(topCount + rightCount, topCount + rightCount + bottomCount)
+  const leftPlayers   = players.slice(topCount + rightCount + bottomCount)
 
   function handleReveal() {
     setRevealed(roomId, true)
