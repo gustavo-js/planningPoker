@@ -5,11 +5,16 @@ import EmojiTray from './EmojiTray'
 const targetRect = { top: 300, bottom: 368, left: 100, width: 48, height: 68 }
 
 describe('EmojiTray', () => {
-  it('renders 3 default quick-pick emoji buttons', () => {
+  it('renders 3 fixed quick-pick emoji buttons', () => {
     render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
     expect(screen.getByText('🍅')).toBeInTheDocument()
     expect(screen.getByText('💩')).toBeInTheDocument()
     expect(screen.getByText('👏')).toBeInTheDocument()
+  })
+
+  it('renders the default recent emoji (🔥) when localStorage is empty', () => {
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
+    expect(screen.getByText('🔥')).toBeInTheDocument()
   })
 
   it('shows last picker emoji in quick row when set in localStorage', () => {
@@ -19,9 +24,9 @@ describe('EmojiTray', () => {
     localStorage.removeItem('lastPickerEmoji')
   })
 
-  it('renders a + button', () => {
+  it('renders the more button', () => {
     render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
-    expect(screen.getByText('+')).toBeInTheDocument()
+    expect(screen.getByTestId('more-btn')).toBeInTheDocument()
   })
 
   it('calls onThrow with the emoji when a quick-pick is clicked', () => {
@@ -38,9 +43,9 @@ describe('EmojiTray', () => {
     expect(onClose).toHaveBeenCalled()
   })
 
-  it('shows expanded grid when + is clicked', () => {
+  it('shows expanded picker when more button is clicked', () => {
     render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
-    fireEvent.click(screen.getByText('+'))
+    fireEvent.click(screen.getByTestId('more-btn'))
     expect(screen.getByTestId('emoji-grid')).toBeInTheDocument()
   })
 

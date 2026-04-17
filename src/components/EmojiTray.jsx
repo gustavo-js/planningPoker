@@ -11,6 +11,17 @@ function getLastPickerEmoji() {
   return localStorage.getItem(LAST_PICKER_KEY) || '🔥'
 }
 
+function GridIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor" aria-hidden>
+      <rect x="0" y="0" width="6" height="6" rx="1.5" />
+      <rect x="9" y="0" width="6" height="6" rx="1.5" />
+      <rect x="0" y="9" width="6" height="6" rx="1.5" />
+      <rect x="9" y="9" width="6" height="6" rx="1.5" />
+    </svg>
+  )
+}
+
 export default function EmojiTray({ targetRect, onThrow, onClose }) {
   const [expanded, setExpanded] = useState(false)
   const [lastPickerEmoji, setLastPickerEmoji] = useState(getLastPickerEmoji)
@@ -38,7 +49,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
   const trayClass = [
     isTopHalf ? styles.tray : styles.trayAbove,
     expanded ? styles.trayExpanded : '',
-  ].join(' ')
+  ].join(' ').trim()
 
   return createPortal(
     <>
@@ -56,15 +67,21 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
                   {e}
                 </button>
               ))}
-              <div className={styles.divider} />
-              <div className={styles.recentSlot}>
-                <button className={styles.emojiBtn} onClick={() => handleThrow(lastPickerEmoji)}>
-                  {lastPickerEmoji}
-                </button>
-                <span className={styles.recentDot} />
-              </div>
-              <div className={styles.divider} />
-              <button className={styles.plusBtn} onClick={() => setExpanded(true)}>+</button>
+              <button
+                className={`${styles.emojiBtn} ${styles.recentBtn}`}
+                onClick={() => handleThrow(lastPickerEmoji)}
+                title="Recently used"
+              >
+                {lastPickerEmoji}
+              </button>
+              <button
+                className={styles.moreBtn}
+                onClick={() => setExpanded(true)}
+                title="All emojis"
+                data-testid="more-btn"
+              >
+                <GridIcon />
+              </button>
             </div>
           ) : (
             <div data-testid="emoji-grid">
