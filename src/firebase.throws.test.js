@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const { mockPush, mockRemove, mockRef, mockOnChildAdded } = vi.hoisted(() => ({
   mockPush: vi.fn(),
@@ -52,6 +52,10 @@ describe('throwEmoji', () => {
 })
 
 describe('subscribeToThrows', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('subscribes to rooms/{roomId}/throws with onChildAdded', () => {
     subscribeToThrows('room1', vi.fn())
     expect(mockRef).toHaveBeenCalledWith(expect.anything(), 'rooms/room1/throws')
@@ -98,7 +102,6 @@ describe('subscribeToThrows', () => {
       key: 'throw1',
       val: () => ({ fromId: 'a', toId: 'b', emoji: '🍅', timestamp: new Date('2026-01-01T00:00:00.000Z').getTime() }),
     })
-    vi.useRealTimers()
     expect(cb).not.toHaveBeenCalled()
   })
 
