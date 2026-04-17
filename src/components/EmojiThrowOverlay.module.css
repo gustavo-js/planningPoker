@@ -1,0 +1,46 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 400;
+}
+
+.arc {
+  position: absolute;
+  font-size: 2rem;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: emojiArc 600ms ease-out forwards;
+}
+
+.land {
+  position: absolute;
+  font-size: 2rem;
+  line-height: 1;
+  pointer-events: none;
+  animation: emojiLand 400ms ease-out forwards;
+}
+
+@keyframes emojiArc {
+  0% {
+    transform: translate(-50%, -50%) translate(0px, 0px) scale(1.2);
+  }
+  40% {
+    transform: translate(-50%, -50%) translate(calc(var(--dx) * 0.4), calc(var(--dy) * 0.4 - 80px)) scale(1.3);
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(1);
+  }
+}
+
+@keyframes emojiLand {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, calc(-50% + 30px));
+    opacity: 0;
+  }
+}
