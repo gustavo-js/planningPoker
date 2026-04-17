@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/planningPoker/',
   test: {
-    environment: 'node',
+    environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.js',
   },
