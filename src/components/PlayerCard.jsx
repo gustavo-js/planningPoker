@@ -1,25 +1,27 @@
 import styles from './PlayerCard.module.css'
 
-export default function PlayerCard({ name, card, revealed, isMe }) {
+export default function PlayerCard({ name, card, revealed, isMe, index = 0 }) {
   const hasVoted = card !== null
 
-  function renderCardFace() {
-    if (!hasVoted && !revealed) {
-      return <div className={styles.cardPending} data-testid="card-pending" />
-    }
-    if (!revealed) {
-      return <div className={styles.cardBack} data-testid="card-back" />
-    }
-    return (
-      <div className={styles.cardFront}>
-        {hasVoted ? card : '—'}
-      </div>
-    )
-  }
+  const backClass = hasVoted ? styles.cardBack : styles.cardPending
 
   return (
     <div className={styles.seat} data-me={isMe || undefined}>
-      {renderCardFace()}
+      <div
+        className={`${styles.cardWrapper} ${revealed ? styles.flipped : ''}`}
+        style={{ '--flip-delay': `${index * 80}ms` }}
+      >
+        <div className={styles.cardInner}>
+          <div className={`${styles.cardFace} ${backClass}`} data-testid={hasVoted ? 'card-back' : 'card-pending'}>
+            {isMe && hasVoted && !revealed && (
+              <span className={styles.myBadge}>{card}</span>
+            )}
+          </div>
+          <div className={`${styles.cardFace} ${styles.cardFront}`}>
+            {hasVoted ? card : '—'}
+          </div>
+        </div>
+      </div>
       <span className={`${styles.name} ${isMe ? styles.nameMe : ''}`}>{name}</span>
     </div>
   )

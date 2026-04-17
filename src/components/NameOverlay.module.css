@@ -9,7 +9,7 @@
 }
 
 .modal {
-  background: var(--surface);
+  background: var(--surface-alt);
   border-radius: var(--radius-lg);
   padding: 2.5rem 3rem;
   display: flex;
@@ -41,7 +41,7 @@
 
 .joinBtn {
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
   font-size: 1.05rem;
   font-weight: 600;
   padding: 0.75rem;

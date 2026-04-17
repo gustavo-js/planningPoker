@@ -1,13 +1,24 @@
 .bar {
+  position: fixed;
+  bottom: 8.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.4rem;
   background: var(--surface);
+  border: 1px solid var(--surface-alt);
   border-radius: var(--radius-lg);
-  min-width: 280px;
+  min-width: 260px;
   max-width: 420px;
-  width: 100%;
+  animation: slideUp 0.3s ease both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .row {
@@ -17,7 +28,7 @@
 }
 
 .cardLabel {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--accent);
   width: 2.5rem;
@@ -26,7 +37,7 @@
 
 .track {
   flex: 1;
-  height: 10px;
+  height: 8px;
   background: var(--surface-alt);
   border-radius: 99px;
   overflow: hidden;
@@ -36,13 +47,13 @@
   height: 100%;
   background: var(--accent);
   border-radius: 99px;
-  transition: width 0.4s ease;
+  transition: width 0.5s ease;
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   white-space: nowrap;
-  min-width: 100px;
+  min-width: 90px;
   text-align: right;
 }

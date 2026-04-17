@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { joinRoom, setVote, setRevealed, newRound, subscribeToRoom } from '../firebase'
 import { generateUserId, computeResults } from '../utils'
 import NameOverlay from '../components/NameOverlay'
@@ -7,6 +7,7 @@ import Table from '../components/Table'
 import PlayerCard from '../components/PlayerCard'
 import CardDeck from '../components/CardDeck'
 import ResultsBar from '../components/ResultsBar'
+import Sparkles from '../components/Sparkles'
 import styles from './RoomPage.module.css'
 
 function getSession() {
@@ -60,6 +61,7 @@ export default function RoomPage() {
   const revealed = roomData.revealed || false
   const myVote = votes[session.userId]?.card ?? null
   const results = computeResults(votes)
+  const allMatch = revealed && results.length === 1
 
   const players = Object.entries(votes).map(([id, data]) => ({
     id,
@@ -89,42 +91,44 @@ export default function RoomPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <span className={styles.logo}>Gus' Planning Poker</span>
+        <Link to="/" className={styles.logo}>Gus' Planning Poker</Link>
         <span className={styles.roomId}>Room: {roomId}</span>
       </header>
 
       <main className={styles.main}>
         <div className={styles.topRow}>
-          {topPlayers.map(p => (
-            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} />
+          {topPlayers.map((p, i) => (
+            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
           ))}
         </div>
 
         <div className={styles.middleRow}>
           <div className={styles.sideCol}>
-            {leftPlayers.map(p => (
-              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} />
+            {leftPlayers.map((p, i) => (
+              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
             ))}
           </div>
 
           <div className={styles.center}>
             <Table revealed={revealed} onReveal={handleReveal} onNewRound={handleNewRound} />
-            {revealed && <ResultsBar results={results} />}
           </div>
 
           <div className={styles.sideCol}>
-            {rightPlayers.map(p => (
-              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} />
+            {rightPlayers.map((p, i) => (
+              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
             ))}
           </div>
         </div>
 
         <div className={styles.bottomRow}>
-          {bottomPlayers.map(p => (
-            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} />
+          {bottomPlayers.map((p, i) => (
+            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
           ))}
         </div>
       </main>
+
+      {revealed && <ResultsBar results={results} />}
+      <Sparkles active={allMatch} />
 
       <footer className={styles.footer}>
         <CardDeck selected={myVote} onSelect={handleSelectCard} />

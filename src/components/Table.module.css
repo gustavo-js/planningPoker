@@ -19,7 +19,7 @@
 
 .revealBtn {
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
 }
 
 .revealBtn:hover {

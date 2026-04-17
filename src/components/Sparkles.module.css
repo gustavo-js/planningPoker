@@ -1,0 +1,39 @@
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.particle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  animation: fly var(--dur) ease-out var(--delay) both;
+}
+
+.warm {
+  background: var(--accent);
+}
+
+.muted {
+  background: var(--text-muted);
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0.2);
+    opacity: 0;
+  }
+}

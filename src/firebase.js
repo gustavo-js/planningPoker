@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getDatabase, ref, set, get, update, onValue } from 'firebase/database'
+import { getDatabase, ref, set, get, update, onValue, remove } from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,11 +14,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
+const ROOM_TTL_MS = 24 * 60 * 60 * 1000
+
 export async function joinRoom(roomId, userId, name) {
   const roomRef = ref(db, `rooms/${roomId}`)
   const snap = await get(roomRef)
-  if (!snap.exists()) {
-    await set(roomRef, { revealed: false, votes: {} })
+  const data = snap.val()
+  const isExpired = data?.createdAt && Date.now() - data.createdAt > ROOM_TTL_MS
+  if (!snap.exists() || isExpired) {
+    if (isExpired) await remove(roomRef)
+    await set(roomRef, { createdAt: Date.now(), revealed: false, votes: {} })
   }
   await set(ref(db, `rooms/${roomId}/votes/${userId}`), { name, card: null })
 }
