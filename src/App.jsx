@@ -1,9 +1,12 @@
-function App() {
+import { Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import RoomPage from './pages/RoomPage'
+
+export default function App() {
   return (
-    <div>
-      <h1>Gus&apos; Planning Poker</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/room/:roomId" element={<RoomPage />} />
+    </Routes>
   )
 }
-
-export default App
