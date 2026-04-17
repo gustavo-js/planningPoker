@@ -1,1 +1,7 @@
 import '@testing-library/jest-dom'
+
+global.IntersectionObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}

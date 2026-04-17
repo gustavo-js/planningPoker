@@ -1,20 +1,19 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
+import Picker from '@emoji-mart/react'
+import data from '@emoji-mart/data'
 import styles from './EmojiTray.module.css'
 
-const QUICK_EMOJIS = ['🍅', '💩', '👏', '🔥']
+const QUICK_EMOJIS = ['🍅', '💩', '👏']
+const LAST_PICKER_KEY = 'lastPickerEmoji'
 
-const EXPANDED_EMOJIS = [
-  '👍', '👎', '❤️', '😂', '😮', '😢', '😡', '🤩',
-  '🎉', '🎊', '🔥', '💯', '✨', '🌟', '⭐', '🏆',
-  '🍅', '🍕', '🍺', '🎂', '🍪', '🍔', '🌮',
-  '💩', '💀', '🤖', '👑', '🎯', '💎', '🚀',
-  '🐛', '🦆', '🐸', '🐧', '🦊', '🐱', '🐶',
-  '👋', '👏', '🤝', '🙏', '✌️', '💪',
-]
+function getLastPickerEmoji() {
+  return localStorage.getItem(LAST_PICKER_KEY) || null
+}
 
 export default function EmojiTray({ targetRect, onThrow, onClose }) {
   const [expanded, setExpanded] = useState(false)
+  const [lastPickerEmoji, setLastPickerEmoji] = useState(getLastPickerEmoji)
 
   const isTopHalf = targetRect.top < window.innerHeight / 2
   const trayStyle = {
@@ -30,6 +29,17 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
     onClose()
   }
 
+  function handlePickerSelect(emojiData) {
+    const emoji = emojiData.native
+    localStorage.setItem(LAST_PICKER_KEY, emoji)
+    setLastPickerEmoji(emoji)
+    handleThrow(emoji)
+  }
+
+  const quickRow = lastPickerEmoji
+    ? [...QUICK_EMOJIS, lastPickerEmoji]
+    : QUICK_EMOJIS
+
   return createPortal(
     <>
       <div
@@ -40,7 +50,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
       <div className={styles.tray} style={trayStyle}>
         {!expanded ? (
           <div className={styles.quickRow}>
-            {QUICK_EMOJIS.map(e => (
+            {quickRow.map(e => (
               <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
                 {e}
               </button>
@@ -48,12 +58,15 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
             <button className={styles.plusBtn} onClick={() => setExpanded(true)}>+</button>
           </div>
         ) : (
-          <div className={styles.grid} data-testid="emoji-grid">
-            {EXPANDED_EMOJIS.map(e => (
-              <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
-                {e}
-              </button>
-            ))}
+          <div data-testid="emoji-grid">
+            <Picker
+              data={data}
+              onEmojiSelect={handlePickerSelect}
+              theme="dark"
+              previewPosition="none"
+              skinTonePosition="none"
+              autoFocus
+            />
           </div>
         )}
       </div>

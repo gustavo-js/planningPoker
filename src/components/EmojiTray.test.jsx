@@ -5,12 +5,18 @@ import EmojiTray from './EmojiTray'
 const targetRect = { top: 300, bottom: 368, left: 100, width: 48, height: 68 }
 
 describe('EmojiTray', () => {
-  it('renders 4 quick-pick emoji buttons', () => {
+  it('renders 3 default quick-pick emoji buttons', () => {
     render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
     expect(screen.getByText('🍅')).toBeInTheDocument()
     expect(screen.getByText('💩')).toBeInTheDocument()
     expect(screen.getByText('👏')).toBeInTheDocument()
-    expect(screen.getByText('🔥')).toBeInTheDocument()
+  })
+
+  it('shows last picker emoji in quick row when set in localStorage', () => {
+    localStorage.setItem('lastPickerEmoji', '😂')
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} />)
+    expect(screen.getByText('😂')).toBeInTheDocument()
+    localStorage.removeItem('lastPickerEmoji')
   })
 
   it('renders a + button', () => {
