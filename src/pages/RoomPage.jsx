@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { joinRoom, setVote, setRevealed, newRound, subscribeToRoom } from '../firebase'
+import { joinRoom, setVote, setRevealed, newRound, subscribeToRoom, subscribeToThrows, throwEmoji, removeThrow } from '../firebase'
 import { generateUserId, computeResults } from '../utils'
 import NameOverlay from '../components/NameOverlay'
 import Table from '../components/Table'
@@ -8,6 +8,8 @@ import PlayerCard from '../components/PlayerCard'
 import CardDeck from '../components/CardDeck'
 import ResultsBar from '../components/ResultsBar'
 import Sparkles from '../components/Sparkles'
+import EmojiTray from '../components/EmojiTray'
+import EmojiThrowOverlay from '../components/EmojiThrowOverlay'
 import styles from './RoomPage.module.css'
 
 function getSession() {
@@ -27,6 +29,9 @@ export default function RoomPage() {
   const [roomData, setRoomData] = useState(null)
   const [session, setSessionState] = useState(getSession)
   const [loading, setLoading] = useState(true)
+  const playerRefs = useRef({})
+  const [tray, setTray] = useState(null)
+  const [flights, setFlights] = useState([])
 
   const hasSession = Boolean(session.name && session.userId)
 
@@ -41,6 +46,13 @@ export default function RoomPage() {
       setLoading(false)
     })
     return () => unsubscribe()
+  }, [roomId])
+
+  useEffect(() => {
+    const unsub = subscribeToThrows(roomId, throwEvent => {
+      setFlights(prev => [...prev, throwEvent])
+    })
+    return () => unsub()
   }, [roomId])
 
   const handleJoin = useCallback((name) => {
@@ -88,6 +100,38 @@ export default function RoomPage() {
     setVote(roomId, session.userId, value)
   }
 
+  function handlePlayerClick(playerId) {
+    const el = playerRefs.current[playerId]
+    if (!el) return
+    setTray({ playerId, rect: el.getBoundingClientRect() })
+  }
+
+  function handleThrow(emoji) {
+    if (!tray) return
+    throwEmoji(roomId, session.userId, tray.playerId, emoji)
+    setTray(null)
+  }
+
+  function handleFlightDone(throwId) {
+    setFlights(prev => prev.filter(f => f.id !== throwId))
+    removeThrow(roomId, throwId)
+  }
+
+  function playerCard(p, i) {
+    return (
+      <PlayerCard
+        key={p.id}
+        ref={el => { playerRefs.current[p.id] = el }}
+        name={p.name}
+        card={p.card}
+        revealed={revealed}
+        isMe={p.isMe}
+        index={i}
+        onClick={p.isMe ? undefined : () => handlePlayerClick(p.id)}
+      />
+    )
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -97,16 +141,12 @@ export default function RoomPage() {
 
       <main className={styles.main}>
         <div className={styles.topRow}>
-          {topPlayers.map((p, i) => (
-            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
-          ))}
+          {topPlayers.map((p, i) => playerCard(p, i))}
         </div>
 
         <div className={styles.middleRow}>
           <div className={styles.sideCol}>
-            {leftPlayers.map((p, i) => (
-              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
-            ))}
+            {leftPlayers.map((p, i) => playerCard(p, i))}
           </div>
 
           <div className={styles.center}>
@@ -114,16 +154,12 @@ export default function RoomPage() {
           </div>
 
           <div className={styles.sideCol}>
-            {rightPlayers.map((p, i) => (
-              <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
-            ))}
+            {rightPlayers.map((p, i) => playerCard(p, i))}
           </div>
         </div>
 
         <div className={styles.bottomRow}>
-          {bottomPlayers.map((p, i) => (
-            <PlayerCard key={p.id} name={p.name} card={p.card} revealed={revealed} isMe={p.isMe} index={i} />
-          ))}
+          {bottomPlayers.map((p, i) => playerCard(p, i))}
         </div>
       </main>
 
@@ -133,6 +169,19 @@ export default function RoomPage() {
       <footer className={styles.footer}>
         <CardDeck selected={myVote} onSelect={handleSelectCard} />
       </footer>
+
+      {tray && (
+        <EmojiTray
+          targetRect={tray.rect}
+          onThrow={handleThrow}
+          onClose={() => setTray(null)}
+        />
+      )}
+      <EmojiThrowOverlay
+        flights={flights}
+        playerRefs={playerRefs}
+        onFlightDone={handleFlightDone}
+      />
     </div>
   )
 }
