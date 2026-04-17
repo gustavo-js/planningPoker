@@ -16,11 +16,10 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
   const [lastPickerEmoji, setLastPickerEmoji] = useState(getLastPickerEmoji)
 
   const isTopHalf = targetRect.top < window.innerHeight / 2
-  const trayStyle = {
+  const anchorStyle = {
     position: 'fixed',
     left: targetRect.left + targetRect.width / 2,
     top: isTopHalf ? targetRect.bottom + 8 : targetRect.top - 8,
-    transform: isTopHalf ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
     zIndex: 301,
   }
 
@@ -47,7 +46,8 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
         data-testid="emoji-backdrop"
         onClick={onClose}
       />
-      <div className={styles.tray} style={trayStyle}>
+      <div style={anchorStyle}>
+      <div className={isTopHalf ? styles.tray : styles.trayAbove}>
         {!expanded ? (
           <div className={styles.quickRow}>
             {quickRow.map(e => (
@@ -55,6 +55,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
                 {e}
               </button>
             ))}
+            <div className={styles.divider} />
             <button className={styles.plusBtn} onClick={() => setExpanded(true)}>+</button>
           </div>
         ) : (
@@ -69,6 +70,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
             />
           </div>
         )}
+      </div>
       </div>
     </>,
     document.body

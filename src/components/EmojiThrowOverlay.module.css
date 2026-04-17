@@ -7,7 +7,7 @@
 
 .arc {
   position: absolute;
-  font-size: 2.8rem;
+  font-size: 1.8rem;
   line-height: 1;
   pointer-events: none;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.55));
@@ -16,7 +16,7 @@
 
 .land {
   position: absolute;
-  font-size: 2.8rem;
+  font-size: 1.8rem;
   line-height: 1;
   pointer-events: none;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
