@@ -7,16 +7,17 @@
 
 .tray,
 .trayAbove {
-  background: rgba(40, 34, 46, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(40, 34, 46, 0.93);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(236, 223, 204, 0.18);
   border-radius: 14px;
-  padding: 0.5rem 0.55rem;
+  padding: 0.5rem 0.6rem;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.65),
     0 0 0 1px rgba(236, 223, 204, 0.06),
-    inset 0 1px 0 rgba(236, 223, 204, 0.08);
+    inset 0 1px 0 rgba(236, 223, 204, 0.09);
+  overflow: hidden;
 }
 
 .tray {
@@ -29,6 +30,12 @@
   transform: translateX(-50%) translateY(-100%);
   transform-origin: bottom center;
   animation: trayInAbove 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* strip padding when the full picker fills the tray */
+.trayExpanded {
+  padding: 0;
+  border-radius: 12px;
 }
 
 @keyframes trayInBelow {
@@ -50,8 +57,8 @@
 .divider {
   width: 1px;
   height: 1.8rem;
-  background: rgba(236, 223, 204, 0.15);
-  margin: 0 0.2rem;
+  background: rgba(236, 223, 204, 0.14);
+  margin: 0 0.15rem;
   flex-shrink: 0;
 }
 
@@ -67,18 +74,38 @@
 }
 
 .emojiBtn:hover {
-  background: rgba(236, 223, 204, 0.12);
-  transform: scale(1.22);
+  background: rgba(236, 223, 204, 0.11);
+  transform: scale(1.2);
 }
 
 .emojiBtn:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
+  transition-duration: 0.06s;
+}
+
+/* recent-from-picker slot */
+.recentSlot {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.recentDot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .plusBtn {
   background: none;
-  border: 1.5px solid rgba(236, 223, 204, 0.35);
-  color: rgba(236, 223, 204, 0.6);
+  border: 1.5px solid rgba(236, 223, 204, 0.3);
+  color: rgba(236, 223, 204, 0.55);
   font-size: 1rem;
   font-weight: 700;
   width: 2rem;
@@ -94,12 +121,13 @@
 }
 
 .plusBtn:hover {
-  background: rgba(236, 223, 204, 0.12);
-  border-color: rgba(236, 223, 204, 0.7);
+  background: rgba(236, 223, 204, 0.11);
+  border-color: rgba(236, 223, 204, 0.65);
   color: #ecdfcc;
   transform: scale(1.1);
 }
 
 .plusBtn:active {
-  transform: scale(0.93);
+  transform: scale(0.92);
+  transition-duration: 0.06s;
 }

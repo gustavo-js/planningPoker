@@ -35,9 +35,10 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
     handleThrow(emoji)
   }
 
-  const quickRow = lastPickerEmoji
-    ? [...QUICK_EMOJIS, lastPickerEmoji]
-    : QUICK_EMOJIS
+  const trayClass = [
+    isTopHalf ? styles.tray : styles.trayAbove,
+    expanded ? styles.trayExpanded : '',
+  ].join(' ')
 
   return createPortal(
     <>
@@ -47,30 +48,37 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
         onClick={onClose}
       />
       <div style={anchorStyle}>
-      <div className={isTopHalf ? styles.tray : styles.trayAbove}>
-        {!expanded ? (
-          <div className={styles.quickRow}>
-            {quickRow.map(e => (
-              <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
-                {e}
-              </button>
-            ))}
-            <div className={styles.divider} />
-            <button className={styles.plusBtn} onClick={() => setExpanded(true)}>+</button>
-          </div>
-        ) : (
-          <div data-testid="emoji-grid">
-            <Picker
-              data={data}
-              onEmojiSelect={handlePickerSelect}
-              theme="dark"
-              previewPosition="none"
-              skinTonePosition="none"
-              autoFocus
-            />
-          </div>
-        )}
-      </div>
+        <div className={trayClass}>
+          {!expanded ? (
+            <div className={styles.quickRow}>
+              {QUICK_EMOJIS.map(e => (
+                <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
+                  {e}
+                </button>
+              ))}
+              <div className={styles.divider} />
+              <div className={styles.recentSlot}>
+                <button className={styles.emojiBtn} onClick={() => handleThrow(lastPickerEmoji)}>
+                  {lastPickerEmoji}
+                </button>
+                <span className={styles.recentDot} />
+              </div>
+              <div className={styles.divider} />
+              <button className={styles.plusBtn} onClick={() => setExpanded(true)}>+</button>
+            </div>
+          ) : (
+            <div data-testid="emoji-grid">
+              <Picker
+                data={data}
+                onEmojiSelect={handlePickerSelect}
+                theme="dark"
+                previewPosition="none"
+                skinTonePosition="none"
+                autoFocus
+              />
+            </div>
+          )}
+        </div>
       </div>
     </>,
     document.body
