@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { joinRoom, setVote, setRevealed, newRound, subscribeToRoom, subscribeToThrows, throwEmoji, removeThrow } from '../firebase'
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import { joinRoom, setVote, setRevealed, newRound, subscribeToRoom, subscribeToThrows, throwEmoji, removeThrow, kickPlayer, transferOwnership } from '../firebase'
 import { generateUserId, computeResults } from '../utils'
 import NameOverlay from '../components/NameOverlay'
 import Table from '../components/Table'
@@ -26,18 +26,23 @@ function setSession(name, userId) {
 
 export default function RoomPage() {
   const { roomId } = useParams()
+  const navigate = useNavigate()
   const [roomData, setRoomData] = useState(null)
   const [session, setSessionState] = useState(getSession)
   const [loading, setLoading] = useState(true)
   const playerRefs = useRef({})
   const [tray, setTray] = useState(null)
   const [flights, setFlights] = useState([])
+  const hasJoined = useRef(false)
 
   const hasSession = Boolean(session.name && session.userId)
 
   useEffect(() => {
     if (!hasSession) return
-    joinRoom(roomId, session.userId, session.name).then(() => setLoading(false))
+    joinRoom(roomId, session.userId, session.name).then(() => {
+      hasJoined.current = true
+      setLoading(false)
+    })
   }, [roomId, session.userId, session.name, hasSession])
 
   useEffect(() => {
@@ -54,6 +59,28 @@ export default function RoomPage() {
     })
     return () => unsub()
   }, [roomId])
+
+  // Redirect kicked player
+  useEffect(() => {
+    if (!hasJoined.current || !roomData) return
+    const votes = roomData.votes || {}
+    if (!votes[session.userId]) {
+      navigate('/?kicked=1')
+    }
+  }, [roomData, session.userId, navigate])
+
+  // Auto-transfer ownership when owner leaves
+  useEffect(() => {
+    if (!roomData) return
+    const votes = roomData.votes || {}
+    const ownerId = roomData.ownerId
+    if (!ownerId || votes[ownerId]) return
+    const remaining = Object.keys(votes).sort()
+    if (remaining.length === 0) return
+    if (remaining[0] === session.userId) {
+      transferOwnership(roomId, session.userId)
+    }
+  }, [roomData, roomId, session.userId])
 
   const handleJoin = useCallback((name) => {
     const userId = generateUserId()
@@ -74,12 +101,14 @@ export default function RoomPage() {
   const myVote = votes[session.userId]?.card ?? null
   const results = computeResults(votes)
   const allMatch = revealed && results.length === 1
+  const isOwner = session.userId === roomData.ownerId
 
   const players = Object.entries(votes).map(([id, data]) => ({
     id,
     name: data.name,
     card: data.card ?? null,
     isMe: id === session.userId,
+    isOwner: id === roomData.ownerId,
   }))
 
   const base = Math.floor(players.length / 4)
@@ -116,6 +145,18 @@ export default function RoomPage() {
     setTray(null)
   }
 
+  function handleKick() {
+    if (!tray) return
+    kickPlayer(roomId, tray.playerId)
+    setTray(null)
+  }
+
+  function handleTransfer() {
+    if (!tray) return
+    transferOwnership(roomId, tray.playerId)
+    setTray(null)
+  }
+
   function handleFlightDone(throwId) {
     setFlights(prev => prev.filter(f => f.id !== throwId))
     removeThrow(roomId, throwId)
@@ -130,6 +171,7 @@ export default function RoomPage() {
         card={p.card}
         revealed={revealed}
         isMe={p.isMe}
+        isOwner={p.isOwner}
         index={i}
         onClick={p.isMe ? undefined : () => handlePlayerClick(p.id)}
       />
@@ -179,6 +221,9 @@ export default function RoomPage() {
           targetRect={tray.rect}
           onThrow={handleThrow}
           onClose={() => setTray(null)}
+          isOwnerViewing={isOwner}
+          onKick={handleKick}
+          onTransfer={handleTransfer}
         />
       )}
       <EmojiThrowOverlay
