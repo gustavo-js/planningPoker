@@ -64,7 +64,7 @@ export default function RoomPage() {
   useEffect(() => {
     if (!hasJoined.current || !roomData) return
     const votes = roomData.votes || {}
-    if (Object.keys(votes).length === 0) return
+    if (Object.keys(votes).length === 0) return // votes is empty during newRound transition — not a kick
     if (!votes[session.userId]) {
       navigate('/?kicked=1')
     }
