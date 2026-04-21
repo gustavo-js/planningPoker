@@ -15,8 +15,8 @@ vi.mock('../utils', () => ({
 
 import HomePage from './HomePage'
 
-const renderHome = () =>
-  render(<MemoryRouter><HomePage /></MemoryRouter>)
+const renderHome = (search = '') =>
+  render(<MemoryRouter initialEntries={[`/${search}`]}><HomePage /></MemoryRouter>)
 
 describe('HomePage', () => {
   it('renders the title', () => {
@@ -47,5 +47,22 @@ describe('HomePage', () => {
     expect(sessionStorage.getItem('name')).toBe('Alice')
     expect(sessionStorage.getItem('userId')).toBe('user-abc')
     expect(mockNavigate).toHaveBeenCalledWith('/room/test01')
+  })
+
+  it('shows kicked message when ?kicked=1 is in the URL', () => {
+    renderHome('?kicked=1')
+    expect(screen.getByTestId('kicked-message')).toBeInTheDocument()
+    expect(screen.getByText(/removed from the room/i)).toBeInTheDocument()
+  })
+
+  it('does not show kicked message without ?kicked=1', () => {
+    renderHome()
+    expect(screen.queryByTestId('kicked-message')).not.toBeInTheDocument()
+  })
+
+  it('dismisses kicked message when close button is clicked', () => {
+    renderHome('?kicked=1')
+    fireEvent.click(screen.getByTestId('kicked-dismiss'))
+    expect(screen.queryByTestId('kicked-message')).not.toBeInTheDocument()
   })
 })

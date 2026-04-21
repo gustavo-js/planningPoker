@@ -50,3 +50,34 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+.kickedMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(220, 80, 80, 0.15);
+  border: 1px solid rgba(220, 80, 80, 0.35);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  color: rgba(236, 223, 204, 0.85);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  max-width: 360px;
+  width: 100%;
+}
+
+.kickedDismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: rgba(236, 223, 204, 0.5);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.kickedDismiss:hover {
+  color: rgba(236, 223, 204, 0.9);
+}
