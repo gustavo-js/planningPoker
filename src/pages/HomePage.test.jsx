@@ -40,12 +40,12 @@ describe('HomePage', () => {
     expect(screen.getByRole('button', { name: /create room/i })).not.toBeDisabled()
   })
 
-  it('stores name and userId in sessionStorage and navigates to room on submit', () => {
+  it('stores name and userId in localStorage and navigates to room on submit', () => {
     renderHome()
     fireEvent.change(screen.getByPlaceholderText('Your name'), { target: { value: 'Alice' } })
     fireEvent.click(screen.getByRole('button', { name: /create room/i }))
-    expect(sessionStorage.getItem('name')).toBe('Alice')
-    expect(sessionStorage.getItem('userId')).toBe('user-abc')
+    expect(localStorage.getItem('name')).toBe('Alice')
+    expect(localStorage.getItem('userId')).toBe('user-abc')
     expect(mockNavigate).toHaveBeenCalledWith('/room/test01')
   })
 

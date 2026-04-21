@@ -12,8 +12,8 @@ export default function HomePage() {
   function handleCreate() {
     const userId = generateUserId()
     const roomId = generateRoomId()
-    sessionStorage.setItem('name', name.trim())
-    sessionStorage.setItem('userId', userId)
+    localStorage.setItem('name', name.trim())
+    localStorage.setItem('userId', userId)
     navigate(`/room/${roomId}`)
   }
 

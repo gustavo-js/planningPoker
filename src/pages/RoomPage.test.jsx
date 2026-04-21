@@ -36,8 +36,8 @@ vi.mock('../utils', () => ({
 import RoomPage from './RoomPage'
 
 function renderRoom(userId = 'user-abc') {
-  sessionStorage.setItem('name', 'Alice')
-  sessionStorage.setItem('userId', userId)
+  localStorage.setItem('name', 'Alice')
+  localStorage.setItem('userId', userId)
   return render(
     <MemoryRouter initialEntries={['/room/room1']}>
       <Routes>
@@ -54,7 +54,7 @@ function fireRoomData(data) {
 beforeEach(() => {
   vi.clearAllMocks()
   roomCallback = null
-  sessionStorage.clear()
+  localStorage.clear()
   mockJoinRoom.mockResolvedValue({})
 })
 

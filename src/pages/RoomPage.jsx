@@ -14,14 +14,14 @@ import styles from './RoomPage.module.css'
 
 function getSession() {
   return {
-    name: sessionStorage.getItem('name'),
-    userId: sessionStorage.getItem('userId'),
+    name: localStorage.getItem('name'),
+    userId: localStorage.getItem('userId'),
   }
 }
 
 function setSession(name, userId) {
-  sessionStorage.setItem('name', name)
-  sessionStorage.setItem('userId', userId)
+  localStorage.setItem('name', name)
+  localStorage.setItem('userId', userId)
 }
 
 export default function RoomPage() {
