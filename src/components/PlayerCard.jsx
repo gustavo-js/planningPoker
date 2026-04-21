@@ -32,7 +32,7 @@ const PlayerCard = forwardRef(function PlayerCard(
           </div>
         </div>
       </div>
-      <span className={`${styles.name} ${isMe ? styles.nameMe : ''}`}>{name}</span>
+      <span className={`${styles.name} ${isMe ? styles.nameMe : ''}`} title={name}>{name}</span>
     </div>
   )
 })

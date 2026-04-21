@@ -79,7 +79,7 @@
 .name {
   font-size: 0.8rem;
   color: var(--text-muted);
-  max-width: 80px;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
