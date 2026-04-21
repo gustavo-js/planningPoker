@@ -22,7 +22,7 @@ function GridIcon() {
   )
 }
 
-export default function EmojiTray({ targetRect, onThrow, onClose }) {
+export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing, onKick, onTransfer }) {
   const [expanded, setExpanded] = useState(false)
   const [lastPickerEmoji, setLastPickerEmoji] = useState(getLastPickerEmoji)
 
@@ -46,10 +46,13 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
     handleThrow(emoji)
   }
 
+  const showOwnerRow = isOwnerViewing && !expanded
+
   const trayClass = [
     isTopHalf ? styles.tray : styles.trayAbove,
     expanded ? styles.trayExpanded : '',
-  ].join(' ').trim()
+    showOwnerRow ? styles.trayOwner : '',
+  ].filter(Boolean).join(' ')
 
   return createPortal(
     <>
@@ -61,28 +64,51 @@ export default function EmojiTray({ targetRect, onThrow, onClose }) {
       <div style={anchorStyle}>
         <div className={trayClass}>
           {!expanded ? (
-            <div className={styles.quickRow}>
-              {QUICK_EMOJIS.map(e => (
-                <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
-                  {e}
+            <>
+              <div className={styles.quickRow}>
+                {QUICK_EMOJIS.map(e => (
+                  <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
+                    {e}
+                  </button>
+                ))}
+                <button
+                  className={`${styles.emojiBtn} ${styles.recentBtn}`}
+                  onClick={() => handleThrow(lastPickerEmoji)}
+                  title="Recently used"
+                >
+                  {lastPickerEmoji}
                 </button>
-              ))}
-              <button
-                className={`${styles.emojiBtn} ${styles.recentBtn}`}
-                onClick={() => handleThrow(lastPickerEmoji)}
-                title="Recently used"
-              >
-                {lastPickerEmoji}
-              </button>
-              <button
-                className={styles.moreBtn}
-                onClick={() => setExpanded(true)}
-                title="All emojis"
-                data-testid="more-btn"
-              >
-                <GridIcon />
-              </button>
-            </div>
+                <button
+                  className={styles.moreBtn}
+                  onClick={() => setExpanded(true)}
+                  title="All emojis"
+                  data-testid="more-btn"
+                >
+                  <GridIcon />
+                </button>
+              </div>
+              {showOwnerRow && (
+                <>
+                  <div className={styles.ownerDivider} />
+                  <div className={styles.ownerRow}>
+                    <button
+                      className={styles.ownerBtn}
+                      onClick={() => { onKick(); onClose() }}
+                      data-testid="kick-btn"
+                    >
+                      👟 Kick
+                    </button>
+                    <button
+                      className={styles.ownerBtn}
+                      onClick={() => { onTransfer(); onClose() }}
+                      data-testid="transfer-btn"
+                    >
+                      👑 Make owner
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
           ) : (
             <div data-testid="emoji-grid">
               <Picker

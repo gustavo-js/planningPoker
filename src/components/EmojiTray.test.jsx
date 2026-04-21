@@ -56,3 +56,42 @@ describe('EmojiTray', () => {
     expect(onClose).toHaveBeenCalled()
   })
 })
+
+describe('owner actions', () => {
+  it('does not show kick or transfer buttons for non-owners', () => {
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} isOwnerViewing={false} onKick={vi.fn()} onTransfer={vi.fn()} />)
+    expect(screen.queryByTestId('kick-btn')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('transfer-btn')).not.toBeInTheDocument()
+  })
+
+  it('shows kick and transfer buttons when isOwnerViewing is true', () => {
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} isOwnerViewing={true} onKick={vi.fn()} onTransfer={vi.fn()} />)
+    expect(screen.getByTestId('kick-btn')).toBeInTheDocument()
+    expect(screen.getByTestId('transfer-btn')).toBeInTheDocument()
+  })
+
+  it('calls onKick and onClose when kick button is clicked', () => {
+    const onKick = vi.fn()
+    const onClose = vi.fn()
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={onClose} isOwnerViewing={true} onKick={onKick} onTransfer={vi.fn()} />)
+    fireEvent.click(screen.getByTestId('kick-btn'))
+    expect(onKick).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('calls onTransfer and onClose when transfer button is clicked', () => {
+    const onTransfer = vi.fn()
+    const onClose = vi.fn()
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={onClose} isOwnerViewing={true} onKick={vi.fn()} onTransfer={onTransfer} />)
+    fireEvent.click(screen.getByTestId('transfer-btn'))
+    expect(onTransfer).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('hides owner actions when expanded picker is open', () => {
+    render(<EmojiTray targetRect={targetRect} onThrow={vi.fn()} onClose={vi.fn()} isOwnerViewing={true} onKick={vi.fn()} onTransfer={vi.fn()} />)
+    fireEvent.click(screen.getByTestId('more-btn'))
+    expect(screen.queryByTestId('kick-btn')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('transfer-btn')).not.toBeInTheDocument()
+  })
+})

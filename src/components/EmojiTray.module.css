@@ -120,3 +120,45 @@
   transform: scale(0.91);
   transition-duration: 0.06s;
 }
+
+/* owner actions — shown below emoji row when viewer is room owner */
+.trayOwner {
+  border-radius: 16px;
+  padding: 0.3rem 0.4rem 0.5rem;
+}
+
+.ownerDivider {
+  height: 1px;
+  background: rgba(236, 223, 204, 0.14);
+  margin: 0.3rem 0.1rem 0.25rem;
+}
+
+.ownerRow {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.ownerBtn {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  background: rgba(236, 223, 204, 0.07);
+  border: 1.5px solid rgba(236, 223, 204, 0.16);
+  border-radius: 8px;
+  color: rgba(236, 223, 204, 0.75);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.13s, border-color 0.13s, color 0.13s;
+  white-space: nowrap;
+}
+
+.ownerBtn:hover {
+  background: rgba(236, 223, 204, 0.14);
+  border-color: rgba(236, 223, 204, 0.35);
+  color: rgba(236, 223, 204, 0.95);
+}
+
+.ownerBtn:active {
+  background: rgba(236, 223, 204, 0.2);
+  transition-duration: 0.06s;
+}
