@@ -52,4 +52,19 @@ describe('PlayerCard', () => {
     expect(ref.current).not.toBeNull()
     expect(ref.current.tagName).toBe('DIV')
   })
+
+  it('shows crown badge when isOwner is true', () => {
+    render(<PlayerCard name="Alice" card={null} revealed={false} isMe={false} isOwner={true} />)
+    expect(screen.getByTestId('crown-badge')).toBeInTheDocument()
+  })
+
+  it('does not show crown badge when isOwner is false', () => {
+    render(<PlayerCard name="Alice" card={null} revealed={false} isMe={false} isOwner={false} />)
+    expect(screen.queryByTestId('crown-badge')).not.toBeInTheDocument()
+  })
+
+  it('does not show crown badge when isOwner is omitted', () => {
+    render(<PlayerCard name="Alice" card={null} revealed={false} isMe={false} />)
+    expect(screen.queryByTestId('crown-badge')).not.toBeInTheDocument()
+  })
 })

@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import styles from './PlayerCard.module.css'
 
 const PlayerCard = forwardRef(function PlayerCard(
-  { name, card, revealed, isMe, index = 0, onClick },
+  { name, card, revealed, isMe, isOwner, index = 0, onClick },
   ref
 ) {
   const hasVoted = card !== null
@@ -21,6 +21,9 @@ const PlayerCard = forwardRef(function PlayerCard(
         className={`${styles.cardWrapper} ${revealed ? styles.flipped : ''}`}
         style={{ '--flip-delay': `${index * 80}ms` }}
       >
+        {isOwner && (
+          <span className={styles.crownBadge} data-testid="crown-badge">👑</span>
+        )}
         <div className={styles.cardInner}>
           <div className={`${styles.cardFace} ${backClass}`} data-testid={hasVoted ? 'card-back' : 'card-pending'}>
             {isMe && hasVoted && !revealed && (
