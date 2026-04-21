@@ -68,6 +68,13 @@ describe('RoomPage — kicked detection', () => {
     })
   })
 
+  it('does not redirect when votes is empty (newRound transition)', async () => {
+    renderRoom('user-abc')
+    await act(async () => {})
+    fireRoomData({ ownerId: 'user-abc', revealed: false, votes: {} })
+    expect(mockNavigate).not.toHaveBeenCalledWith('/?kicked=1')
+  })
+
   it('does not redirect when current user is still in votes', async () => {
     renderRoom('user-abc')
     await act(async () => {})
