@@ -23,7 +23,7 @@ export async function joinRoom(roomId, userId, name) {
   const isExpired = data?.createdAt && Date.now() - data.createdAt > ROOM_TTL_MS
   if (!snap.exists() || isExpired) {
     if (isExpired) await remove(roomRef)
-    await set(roomRef, { createdAt: Date.now(), revealed: false, votes: {} })
+    await set(roomRef, { createdAt: Date.now(), ownerId: userId, revealed: false, votes: {} })
   }
   await set(ref(db, `rooms/${roomId}/votes/${userId}`), { name, card: null })
 }
@@ -63,4 +63,12 @@ export function subscribeToThrows(roomId, callback) {
 
 export async function removeThrow(roomId, throwId) {
   await remove(ref(db, `rooms/${roomId}/throws/${throwId}`))
+}
+
+export async function kickPlayer(roomId, userId) {
+  await remove(ref(db, `rooms/${roomId}/votes/${userId}`))
+}
+
+export async function transferOwnership(roomId, newUserId) {
+  await set(ref(db, `rooms/${roomId}/ownerId`), newUserId)
 }
