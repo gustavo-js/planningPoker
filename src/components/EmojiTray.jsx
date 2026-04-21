@@ -95,6 +95,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
                       className={styles.ownerBtn}
                       onClick={() => { onKick(); onClose() }}
                       data-testid="kick-btn"
+                      aria-label="Kick player"
                     >
                       👟 Kick
                     </button>
@@ -102,6 +103,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
                       className={styles.ownerBtn}
                       onClick={() => { onTransfer(); onClose() }}
                       data-testid="transfer-btn"
+                      aria-label="Transfer ownership"
                     >
                       👑 Make owner
                     </button>
