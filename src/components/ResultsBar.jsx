@@ -4,7 +4,7 @@ export default function ResultsBar({ results }) {
   if (!results.length) return null
 
   return (
-    <div className={styles.bar} role="status" aria-live="polite">
+    <div className={styles.bar} role="status" aria-live="polite" aria-label="Vote results">
       {results.map(({ card, count, percentage }) => (
         <div key={card} className={styles.row}>
           <span className={styles.cardLabel}>{card}</span>

@@ -25,6 +25,7 @@
   justify-content: center;
 }
 
+/* matches PlayerCard .cardWrapper dimensions — update together if card size changes */
 .card {
   width: 48px;
   height: 68px;

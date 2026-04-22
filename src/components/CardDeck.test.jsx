@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import CardDeck from './CardDeck'
 
 describe('CardDeck', () => {
@@ -19,5 +19,19 @@ describe('CardDeck', () => {
     render(<CardDeck selected="5" onSelect={() => {}} />)
     expect(screen.getByRole('button', { name: 'Select 5' })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('button', { name: 'Select 1' })).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('calls onSelect with the card value when clicked', () => {
+    const onSelect = vi.fn()
+    render(<CardDeck selected={null} onSelect={onSelect} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Select 5' }))
+    expect(onSelect).toHaveBeenCalledWith('5')
+  })
+
+  it('calls onSelect with null when the selected card is clicked again', () => {
+    const onSelect = vi.fn()
+    render(<CardDeck selected="5" onSelect={onSelect} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Select 5' }))
+    expect(onSelect).toHaveBeenCalledWith(null)
   })
 })

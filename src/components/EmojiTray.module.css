@@ -193,7 +193,8 @@
   font-size: 0.65rem;
   line-height: 1;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-in-out);
+  transition: background var(--duration-fast) var(--ease-in-out),
+              color var(--duration-fast) var(--ease-in-out);
 }
 
 .backBtn:hover {
