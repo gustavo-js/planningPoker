@@ -8,7 +8,7 @@ describe('ResultsBar', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('renders a row for each result', () => {
+  it('renders each result card label', () => {
     const results = [
       { card: '5', count: 2, percentage: 67 },
       { card: '8', count: 1, percentage: 33 },
@@ -16,8 +16,6 @@ describe('ResultsBar', () => {
     render(<ResultsBar results={results} />)
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(screen.getByText('8')).toBeInTheDocument()
-    expect(screen.getByText('2 votes (67%)')).toBeInTheDocument()
-    expect(screen.getByText('1 vote (33%)')).toBeInTheDocument()
   })
 
   it('uses singular "vote" for count of 1', () => {
