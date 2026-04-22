@@ -37,7 +37,7 @@
   /* transition scale */
   --duration-fast: 0.1s;
   --duration-normal: 0.2s;
-  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* semantic colors */
   --color-error: #f87171;
