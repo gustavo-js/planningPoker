@@ -31,7 +31,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
     position: 'fixed',
     left: targetRect.left + targetRect.width / 2,
     top: isTopHalf ? targetRect.bottom + 8 : targetRect.top - 8,
-    zIndex: 301,
+    zIndex: 'calc(var(--z-tray) + 1)',
   }
 
   function handleThrow(emoji) {

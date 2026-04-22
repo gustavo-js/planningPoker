@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 400;
+  z-index: var(--z-throws);
 }
 
 .arc {

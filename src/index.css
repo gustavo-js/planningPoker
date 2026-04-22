@@ -75,7 +75,7 @@ button {
   font-family: inherit;
   border: none;
   border-radius: var(--radius);
-  transition: background 0.2s, transform 0.1s;
+  transition: background var(--duration-normal) var(--ease-in-out), transform var(--duration-fast) var(--ease-in-out);
 }
 
 button:active {
