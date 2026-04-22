@@ -32,6 +32,7 @@ export default function RoomPage() {
   const [session, setSessionState] = useState(getSession)
   const [loading, setLoading] = useState(true)
   const playerRefs = useRef({})
+  const playerRailRefs = useRef({})
   const [tray, setTray] = useState(null)
   const [flights, setFlights] = useState([])
   const hasJoined = useRef(false)
@@ -136,7 +137,9 @@ export default function RoomPage() {
   }
 
   function handlePlayerClick(playerId) {
-    const el = playerRefs.current[playerId]
+    const isMobile = window.matchMedia('(max-width: 768px)').matches
+    const refs = isMobile ? playerRailRefs : playerRefs
+    const el = refs.current[playerId]
     if (!el) return
     setTray({ playerId, rect: el.getBoundingClientRect() })
   }
@@ -180,6 +183,22 @@ export default function RoomPage() {
     )
   }
 
+  function railPlayerCard(p, i) {
+    return (
+      <PlayerCard
+        key={`rail-${p.id}`}
+        ref={el => { playerRailRefs.current[p.id] = el }}
+        name={p.name}
+        card={p.card}
+        revealed={revealed}
+        isMe={p.isMe}
+        isOwner={p.isOwner}
+        index={i}
+        onClick={p.isMe ? undefined : () => handlePlayerClick(p.id)}
+      />
+    )
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -189,7 +208,7 @@ export default function RoomPage() {
 
       <main className={styles.main}>
         <div className={styles.playerRail}>
-          {players.map((p, i) => playerCard(p, i))}
+          {players.map((p, i) => railPlayerCard(p, i))}
         </div>
 
         <div className={styles.topRow}>
