@@ -75,3 +75,45 @@
 .footer {
   flex-shrink: 0;
 }
+
+/* Mobile player rail — hidden on desktop */
+.playerRail {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Show rail, hide desktop grid rows */
+  .playerRail {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-3);
+    overflow-x: auto;
+    padding: var(--space-2) var(--space-4);
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .playerRail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topRow,
+  .bottomRow {
+    display: none;
+  }
+
+  .sideCol {
+    display: none;
+  }
+
+  .middleRow {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .main {
+    padding: var(--space-3);
+    gap: var(--space-4);
+  }
+}

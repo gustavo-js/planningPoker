@@ -188,6 +188,10 @@ export default function RoomPage() {
       </header>
 
       <main className={styles.main}>
+        <div className={styles.playerRail}>
+          {players.map((p, i) => playerCard(p, i))}
+        </div>
+
         <div className={styles.topRow}>
           {topPlayers.map((p, i) => playerCard(p, i))}
         </div>
