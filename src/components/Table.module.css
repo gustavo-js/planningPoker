@@ -20,6 +20,7 @@
 .revealBtn {
   background: var(--accent);
   color: var(--bg);
+  transition: background var(--duration-normal) var(--ease-in-out);
 }
 
 .revealBtn:hover {
@@ -30,6 +31,7 @@
   background: transparent;
   color: var(--text);
   border: 2px solid var(--text-muted) !important;
+  transition: border-color var(--duration-normal) var(--ease-in-out);
 }
 
 .newRoundBtn:hover {

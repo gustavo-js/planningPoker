@@ -68,7 +68,9 @@
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.13s, border-color 0.13s, transform 0.13s;
+  transition: background var(--duration-fast) var(--ease-in-out),
+              border-color var(--duration-fast) var(--ease-in-out),
+              transform var(--duration-fast) var(--ease-in-out);
   flex-shrink: 0;
 }
 
@@ -80,7 +82,7 @@
 
 .emojiBtn:active {
   transform: scale(0.92);
-  transition-duration: 0.06s;
+  transition-duration: var(--duration-fast);
 }
 
 /* recent-from-picker slot — accent ring */
@@ -104,7 +106,10 @@
   border-radius: 50%;
   color: rgba(236, 223, 204, 0.55);
   cursor: pointer;
-  transition: background 0.13s, border-color 0.13s, color 0.13s, transform 0.13s;
+  transition: background var(--duration-fast) var(--ease-in-out),
+              border-color var(--duration-fast) var(--ease-in-out),
+              color var(--duration-fast) var(--ease-in-out),
+              transform var(--duration-fast) var(--ease-in-out);
   flex-shrink: 0;
   margin-left: 0.1rem;
 }
@@ -118,7 +123,7 @@
 
 .moreBtn:active {
   transform: scale(0.91);
-  transition-duration: 0.06s;
+  transition-duration: var(--duration-fast);
 }
 
 /* owner actions — shown below emoji row when viewer is room owner */
@@ -148,7 +153,9 @@
   color: rgba(236, 223, 204, 0.75);
   font-size: 0.8rem;
   cursor: pointer;
-  transition: background 0.13s, border-color 0.13s, color 0.13s;
+  transition: background var(--duration-fast) var(--ease-in-out),
+              border-color var(--duration-fast) var(--ease-in-out),
+              color var(--duration-fast) var(--ease-in-out);
   white-space: nowrap;
 }
 
@@ -160,7 +167,7 @@
 
 .ownerBtn:active {
   background: rgba(236, 223, 204, 0.2);
-  transition-duration: 0.06s;
+  transition-duration: var(--duration-fast);
 }
 
 /* expanded picker wrapper — needed for back button positioning */
