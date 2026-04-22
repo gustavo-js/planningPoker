@@ -81,3 +81,10 @@
 .kickedDismiss:hover {
   color: rgba(236, 223, 204, 0.9);
 }
+
+@media (max-width: 400px) {
+  .card {
+    padding: var(--space-4);
+    margin: 0 var(--space-2);
+  }
+}
