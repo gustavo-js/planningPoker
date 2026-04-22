@@ -16,6 +16,8 @@ describe('ResultsBar', () => {
     render(<ResultsBar results={results} />)
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(screen.getByText('8')).toBeInTheDocument()
+    expect(screen.getByText('2 votes (67%)')).toBeInTheDocument()
+    expect(screen.getByText('1 vote (33%)')).toBeInTheDocument()
   })
 
   it('uses singular "vote" for count of 1', () => {
