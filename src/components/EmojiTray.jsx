@@ -67,7 +67,12 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
             <>
               <div className={styles.quickRow}>
                 {QUICK_EMOJIS.map(e => (
-                  <button key={e} className={styles.emojiBtn} onClick={() => handleThrow(e)}>
+                  <button
+                    key={e}
+                    className={styles.emojiBtn}
+                    onClick={() => handleThrow(e)}
+                    aria-label={`Throw ${e}`}
+                  >
                     {e}
                   </button>
                 ))}
@@ -75,6 +80,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
                   className={`${styles.emojiBtn} ${styles.recentBtn}`}
                   onClick={() => handleThrow(lastPickerEmoji)}
                   title="Recently used"
+                  aria-label={`Throw ${lastPickerEmoji}`}
                 >
                   {lastPickerEmoji}
                 </button>
@@ -83,6 +89,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
                   onClick={() => setExpanded(true)}
                   title="All emojis"
                   data-testid="more-btn"
+                  aria-label="Open emoji picker"
                 >
                   <GridIcon />
                 </button>
@@ -112,7 +119,14 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
               )}
             </>
           ) : (
-            <div data-testid="emoji-grid">
+            <div className={styles.expandedWrapper} data-testid="emoji-grid">
+              <button
+                className={styles.backBtn}
+                onClick={() => setExpanded(false)}
+                aria-label="Close emoji picker"
+              >
+                ✕
+              </button>
               <Picker
                 data={data}
                 onEmojiSelect={handlePickerSelect}

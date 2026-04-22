@@ -162,3 +162,34 @@
   background: rgba(236, 223, 204, 0.2);
   transition-duration: 0.06s;
 }
+
+/* expanded picker wrapper — needed for back button positioning */
+.expandedWrapper {
+  position: relative;
+}
+
+/* back button inside expanded picker */
+.backBtn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-float);
+  border: 1px solid rgba(236, 223, 204, 0.2);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.backBtn:hover {
+  background: rgba(236, 223, 204, 0.14);
+  color: var(--text);
+}
