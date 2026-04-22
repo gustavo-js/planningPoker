@@ -17,7 +17,9 @@
   border-radius: var(--radius);
   font-size: 1.3rem;
   font-weight: 700;
-  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+  transition: border-color var(--duration-normal) var(--ease-in-out),
+              transform var(--duration-normal) var(--ease-in-out),
+              background var(--duration-normal) var(--ease-in-out);
 }
 
 .card:hover {

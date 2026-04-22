@@ -11,6 +11,7 @@ export default function CardDeck({ selected, onSelect }) {
           className={`${styles.card} ${selected === value ? styles.selected : ''}`}
           onClick={() => onSelect(selected === value ? null : value)}
           aria-pressed={selected === value ? 'true' : 'false'}
+          aria-label={`Select ${value}`}
         >
           {value}
         </button>
