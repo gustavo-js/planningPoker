@@ -90,6 +90,9 @@ input {
   color: var(--text);
   padding: 0.6rem 1rem;
   font-size: 1rem;
+}
+
+input:focus:not(:focus-visible) {
   outline: none;
 }
 
