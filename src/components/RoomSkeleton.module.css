@@ -1,0 +1,43 @@
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  height: 100vh;
+}
+
+.topRow,
+.bottomRow {
+  display: flex;
+  gap: var(--space-5);
+  justify-content: center;
+}
+
+.middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 48px;
+  height: 68px;
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.table {
+  width: 220px;
+  height: 110px;
+  border-radius: 60px;
+  background: var(--surface-alt);
+  animation: pulse 1.5s ease-in-out infinite;
+  animation-delay: 0.25s;
+}

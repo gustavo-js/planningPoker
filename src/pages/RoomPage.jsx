@@ -10,6 +10,7 @@ import ResultsBar from '../components/ResultsBar'
 import Sparkles from '../components/Sparkles'
 import EmojiTray from '../components/EmojiTray'
 import EmojiThrowOverlay from '../components/EmojiThrowOverlay'
+import RoomSkeleton from '../components/RoomSkeleton'
 import styles from './RoomPage.module.css'
 
 function getSession() {
@@ -94,7 +95,7 @@ export default function RoomPage() {
   }
 
   if (loading || !roomData) {
-    return <div className={styles.loading}>Connecting…</div>
+    return <RoomSkeleton />
   }
 
   const votes = roomData.votes || {}
