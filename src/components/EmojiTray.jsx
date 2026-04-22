@@ -119,14 +119,7 @@ export default function EmojiTray({ targetRect, onThrow, onClose, isOwnerViewing
               )}
             </>
           ) : (
-            <div className={styles.expandedWrapper} data-testid="emoji-grid">
-              <button
-                className={styles.backBtn}
-                onClick={() => setExpanded(false)}
-                aria-label="Close emoji picker"
-              >
-                ✕
-              </button>
+            <div data-testid="emoji-grid">
               <Picker
                 data={data}
                 onEmojiSelect={handlePickerSelect}

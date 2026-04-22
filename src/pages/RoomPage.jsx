@@ -33,6 +33,13 @@ export default function RoomPage() {
   const [loading, setLoading] = useState(true)
   const playerRefs = useRef({})
   const playerRailRefs = useRef({})
+  const activePlayerRefs = {
+    get current() {
+      return window.matchMedia('(max-width: 768px)').matches
+        ? playerRailRefs.current
+        : playerRefs.current
+    },
+  }
   const [tray, setTray] = useState(null)
   const [flights, setFlights] = useState([])
   const hasJoined = useRef(false)
@@ -253,7 +260,7 @@ export default function RoomPage() {
       )}
       <EmojiThrowOverlay
         flights={flights}
-        playerRefs={playerRefs}
+        playerRefs={activePlayerRefs}
         onFlightDone={handleFlightDone}
       />
     </div>
